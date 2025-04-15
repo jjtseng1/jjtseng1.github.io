@@ -15,11 +15,11 @@
   .author-date { text-align: center; font-weight: bold; margin-bottom: 2em; }
   .figure-caption { font-size: 0.9em; color: #555; text-align: center; margin-top: 0.2em; margin-bottom: 1.5em; }
 </style>
-<!-- KaTeX for math rendering -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha384-xXyulnxdoN4+9ZwvuSBTVgOHybKu3ajBx2F0HdTvbXr57v3Eq5M0ALEJYVHzH1g+" crossorigin="anonymous">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js" integrity="sha384-o2/3TUWI65ZWdjDLEaC6ufhY9+AWLShtm8TwpwLZ61oIGTTirGIbTyePJQBX/4Ez" crossorigin="anonymous"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQbw4/Wscqq8nCM+e0Etn8gyKKQs22Ph+Wny5fFZugKmc2XG7VSohwv/3p3" crossorigin="anonymous"
-        onload="renderMathInElement(document.body);"></script>
+<!-- MathJax for LaTeX rendering -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
 <!-- Plotly for interactive charts -->
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
@@ -449,7 +449,13 @@
   <li>Oddstrader (2022). “The Truth About Public Betting Trends.” (Aug 2022).  ([Understanding Public Betting Trends and Their Impact on NFL Odds | WIN DAILY® – DFS & Sports Betting Tools, Exclusive Content, and Expert Chat](https://windailysports.com/understanding-public-betting-trends-and-their-impact-on-nfl-odds/#:~:text=Impact%3A))</li>
 </ol>
 
-<!-- Plotly chart scripts -->
+<!-- MathJax will now render formulas like: -->
+<p style="text-align:center;">
+\[
+\text{logit}\left(\Pr(\text{Cover}_{\text{favorite}})\right) = \alpha + \beta_1 \cdot \text{PublicPct}_{\text{fav}} + \beta_2 \cdot \text{Spread} + \epsilon
+\]
+</p>
+
 <script>
 var data1 = [{"x":[10,20,30,40,50,60,70,80,90],"y":[88.23529411764706,83.63225322740893,77.3029682084235,68.75,50,38.888888888888886,28.888888888888886,19.607843137254903,11.76470588235294],"mode":"lines","name":"Logistic Fit","line":{"color":"blue"}},{"x":[35,45,55,65,75],"y":[60,55,45,35,25],"mode":"markers","name":"Data Points","marker":{"color":"red","size":8}}];
 var layout1 = {"title":{"text":"Public Betting Percentage vs ATS Win Rate (NBA Finals, 2010-2024)"},"xaxis":{"title":{"text":"Public Betting on Favorite (%)"}},"yaxis":{"range":[0,100],"title":{"text":"Favorite Cover Rate (%)"}}};
@@ -546,6 +552,5 @@ var layout2 = {
 };
 Plotly.newPlot('chart-cumulative-profit', data2, layout2);
 </script>
-
 </body>
 </html>
