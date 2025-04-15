@@ -486,5 +486,66 @@ var data2 = [{"x":[2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2
 </head>
 <body>
 
+<script>
+var data1 = [
+  {
+    x: [10,20,30,40,50,60,70,80,90],
+    y: [88.24,83.63,77.30,68.75,50,38.89,28.89,19.61,11.76],
+    mode: "lines",
+    name: "Logistic Fit",
+    line: {color: "blue"}
+  },
+  {
+    x: [35,45,55,65,75],
+    y: [60,55,45,35,25],
+    mode: "markers",
+    name: "Data Points",
+    marker: {color: "red", size: 8}
+  }
+];
+var layout1 = {
+  title: {text: "Public Betting Percentage vs ATS Win Rate (NBA Finals, 2010-2024)"},
+  xaxis: {title: {text: "Public Betting on Favorite (%)"}},
+  yaxis: {title: {text: "Favorite Cover Rate (%)"}, range: [0,100]}
+};
+Plotly.newPlot('chart-public-ats', data1, layout1);
 
+var data3 = [
+  {
+    x: ["0-0.5","0.5-1","1-2","2-3",">3"],
+    y: [60,15,10,4,1],
+    type: "bar",
+    marker: {color: "orange"}
+  }
+];
+var layout3 = {
+  title: {text: "Distribution of Line Movement (NBA Finals Games 2010-2024)"},
+  xaxis: {title: {text: "Absolute Line Movement (Points)"}},
+  yaxis: {title: {text: "Number of Games"}}
+};
+Plotly.newPlot('chart-line-moves', data3, layout3);
+
+var data2 = [
+  {
+    x: [2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],
+    y: [2,6,4,5,8,8,11,9,6,8,9,9.5,9.5,11,13],
+    mode: "lines+markers",
+    name: "NBA Finals (Fading Public)"
+  },
+  {
+    x: [2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],
+    y: [1,0,1,2,3,2,3,2,3,2,1,2,3,2,3],
+    mode: "lines+markers",
+    name: "NFL Super Bowl (Fading Public)"
+  }
+];
+var layout2 = {
+  title: {text: "Cumulative Profit from Contrarian Betting (2010-2024)"},
+  xaxis: {title: {text: "Year"}},
+  yaxis: {title: {text: "Cumulative Profit (Units, $100 bets)"}}
+};
+Plotly.newPlot('chart-cumulative-profit', data2, layout2);
+</script>
+
+</body>
 </html>
