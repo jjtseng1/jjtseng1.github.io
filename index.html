@@ -64,6 +64,33 @@
   Our analysis focuses on the most-watched games – the NFL Super Bowl and the NBA Finals – to see if these effects are especially pronounced when 
   casual betting interest peaks. Using logistic regression and time-series trend analysis on championship game data, we test whether public-favored 
   teams underperform ATS and visualize how point spreads move from opening to closing lines, as well as how consistently sportsbooks profit from these games.</p>
+  
+  <h2>Behavioral Theory Background</h2>
+<p>Why do bettors behave in ways that allow sportsbooks to exploit them? 
+  The answer lies in several well-documented cognitive and behavioral biases that affect decision-making under risk, 
+  especially in the emotionally charged context of sports fandom and big games. Championship events 
+  like the Super Bowl and NBA Finals attract many casual bettors who may be betting with their hearts or 
+  instincts rather than objective analysis. Below, we outline a few key behavioral tendencies that 
+  likely contribute to the public betting patterns observed:</p>
+
+<ul>
+  <li><strong>Overconfidence &amp; Favorite Bias:</strong> Casual bettors often exhibit overconfidence in the top teams or star players. Going into a championship, there is usually a favorite that is considered the “better” team. Bettors commonly believe that this team will not only win but cover the spread with room to spare. This can stem from an inflated assessment of the favorite’s abilities (perhaps due to a dominant playoff run or media hype). Overconfident bettors might think the oddsmakers are “undervaluing” the favorite even when the line is actually fair or even inflated. As a result, an outsized proportion of bets pour in on the favored team, even if the line has moved against them.</li>
+  <li><strong>“Betting on Winners” &amp; Recency Bias:</strong> People prefer to bet on what they perceive as the likely winner. In a championship setting, the favorite is often a recent powerhouse or a team with a marquee player. Recency bias leads bettors to put too much weight on recent performances (e.g. a team that won big in the conference championship or a star player’s MVP season) while discounting regression to the mean or the opponent’s strengths. This bias is reinforced by media narratives. For instance, leading up to a Super Bowl, if one team looked unbeatable in the playoffs, casual bettors might assume that trend will continue, overlooking factors that might favor the underdog. This bias helps explain why public money so often tilts towards the team that’s been hottest or has the most impressive storyline.</li>
+  <li><strong>Familiarity &amp; Star Power:</strong> The public also tends to bet on teams and players they know and love. In the NBA, a team led by LeBron James or Stephen Curry will draw more public bets simply due to star appeal and familiarity, regardless of the opponent’s relative strength. In the NFL, legendary quarterbacks like Tom Brady or Patrick Mahomes become public favorites. Bettors might bet on these figures because they enjoy rooting for them, creating a built-in bias that bookmakers can anticipate. This phenomenon is akin to brand loyalty in consumer behavior – given a high-stakes choice, many people stick with the “brand name” team/player.</li>
+  <li><strong>Overs and Excitement Bias:</strong> Separate from sides (favorite vs underdog), there is a well-known public bias toward betting overs on totals. Simply put, it’s more fun for most fans to bet that more points will be scored. In championship games, with so many offensive stars on display, public bettors frequently take the over (believing both teams will “shine” on the big stage). Sportsbooks can shade totals a bit higher, knowing recreational bettors will still take the over. Historically, this has led to slightly profitable results for under bettors in some championship scenarios (though our focus is ATS, we note that the under hit in 7 of the last 10 Super Bowls where the public was heavy on the over, for example (2025 Super Bowl Betting Trends, Preview, Notes: Action Network Betting Primer).</li>
+  <li><strong>Loss Aversion &amp; Gamblers’ Fallacy (Chasing Losses):</strong> Many bettors in a series of games (like the NBA Finals, which is a best-of-seven series) will double down on a lost bet, exhibiting the gambler’s fallacy or a “due for a win” mentality. For example, if a popular team fails to cover in Game 1, public bettors might come back even heavier on them in Game 2, thinking “they won’t let us down again” or “they’re too good to keep missing covers.” This chasing behavior can actually exacerbate the biases as the series progresses, leading to even more lopsided action following a public loss. Sportsbooks likely recognize this pattern, and if anything, become even more confident in shading lines against the public after a public-heavy loss, knowing the crowd’s impulse is often to persist rather than switch sides.</li>
+</ul>
+
+<p>These biases are rooted in human psychology. Concepts from behavioral economics, 
+  such as <em>prospect theory</em> (Kahneman &amp; Tversky) and others, show that people 
+  do not always act as rational value-maximizers, especially under uncertainty and emotional involvement. 
+  Instead, we see bettors deriving utility from backing the perceived “better” team or their 
+  favorite stars (consumption utility), and the pain of losing may drive them to irrational decisions like chasing bets. 
+  In a championship context, fans often bet with their hearts—e.g., Eagles fans all piling money on the 
+  Eagles in the Super Bowl—skewing the betting percentages. The sportsbook, aware of these tendencies, 
+  effectively becomes an opponent who knows exactly how the public will lean and can use that knowledge to its advantage. 
+  In summary, behavioral biases among bettors create the conditions for the sportsbook to “always win” 
+  by laying traps in the form of tempting but value-poor odds on the popular side.</p>
 
 <h2>Literature Review</h2>
 <p>Early work on sports betting market efficiency treated point spreads as essentially unbiased estimators, implying neither the favorite 
@@ -240,37 +267,11 @@
   (since bettors lose far more often than they win, and pay the vig when they lose). This represents an exceptionally
   healthy margin attributable to the exploitation of bettor biases.</p>
 
-<h2>Behavioral Theory Background</h2>
-<p>Why do bettors behave in ways that allow sportsbooks to exploit them? 
-  The answer lies in several well-documented cognitive and behavioral biases that affect decision-making under risk, 
-  especially in the emotionally charged context of sports fandom and big games. Championship events 
-  like the Super Bowl and NBA Finals attract many casual bettors who may be betting with their hearts or 
-  instincts rather than objective analysis. Below, we outline a few key behavioral tendencies that 
-  likely contribute to the public betting patterns observed:</p>
-
-<ul>
-  <li><strong>Overconfidence &amp; Favorite Bias:</strong> Casual bettors often exhibit overconfidence in the top teams or star players. Going into a championship, there is usually a favorite that is considered the “better” team. Bettors commonly believe that this team will not only win but cover the spread with room to spare. This can stem from an inflated assessment of the favorite’s abilities (perhaps due to a dominant playoff run or media hype). Overconfident bettors might think the oddsmakers are “undervaluing” the favorite even when the line is actually fair or even inflated. As a result, an outsized proportion of bets pour in on the favored team, even if the line has moved against them.</li>
-  <li><strong>“Betting on Winners” &amp; Recency Bias:</strong> People prefer to bet on what they perceive as the likely winner. In a championship setting, the favorite is often a recent powerhouse or a team with a marquee player. Recency bias leads bettors to put too much weight on recent performances (e.g. a team that won big in the conference championship or a star player’s MVP season) while discounting regression to the mean or the opponent’s strengths. This bias is reinforced by media narratives. For instance, leading up to a Super Bowl, if one team looked unbeatable in the playoffs, casual bettors might assume that trend will continue, overlooking factors that might favor the underdog. This bias helps explain why public money so often tilts towards the team that’s been hottest or has the most impressive storyline.</li>
-  <li><strong>Familiarity &amp; Star Power:</strong> The public also tends to bet on teams and players they know and love. In the NBA, a team led by LeBron James or Stephen Curry will draw more public bets simply due to star appeal and familiarity, regardless of the opponent’s relative strength. In the NFL, legendary quarterbacks like Tom Brady or Patrick Mahomes become public favorites. Bettors might bet on these figures because they enjoy rooting for them, creating a built-in bias that bookmakers can anticipate. This phenomenon is akin to brand loyalty in consumer behavior – given a high-stakes choice, many people stick with the “brand name” team/player.</li>
-  <li><strong>Overs and Excitement Bias:</strong> Separate from sides (favorite vs underdog), there is a well-known public bias toward betting overs on totals. Simply put, it’s more fun for most fans to bet that more points will be scored. In championship games, with so many offensive stars on display, public bettors frequently take the over (believing both teams will “shine” on the big stage). Sportsbooks can shade totals a bit higher, knowing recreational bettors will still take the over. Historically, this has led to slightly profitable results for under bettors in some championship scenarios (though our focus is ATS, we note that the under hit in 7 of the last 10 Super Bowls where the public was heavy on the over, for example (2025 Super Bowl Betting Trends, Preview, Notes: Action Network Betting Primer).</li>
-  <li><strong>Loss Aversion &amp; Gamblers’ Fallacy (Chasing Losses):</strong> Many bettors in a series of games (like the NBA Finals, which is a best-of-seven series) will double down on a lost bet, exhibiting the gambler’s fallacy or a “due for a win” mentality. For example, if a popular team fails to cover in Game 1, public bettors might come back even heavier on them in Game 2, thinking “they won’t let us down again” or “they’re too good to keep missing covers.” This chasing behavior can actually exacerbate the biases as the series progresses, leading to even more lopsided action following a public loss. Sportsbooks likely recognize this pattern, and if anything, become even more confident in shading lines against the public after a public-heavy loss, knowing the crowd’s impulse is often to persist rather than switch sides.</li>
-</ul>
-
-<p>These biases are rooted in human psychology. Concepts from behavioral economics, 
-  such as <em>prospect theory</em> (Kahneman &amp; Tversky) and others, show that people 
-  do not always act as rational value-maximizers, especially under uncertainty and emotional involvement. 
-  Instead, we see bettors deriving utility from backing the perceived “better” team or their 
-  favorite stars (consumption utility), and the pain of losing may drive them to irrational decisions like chasing bets. 
-  In a championship context, fans often bet with their hearts—e.g., Eagles fans all piling money on the 
-  Eagles in the Super Bowl—skewing the betting percentages. The sportsbook, aware of these tendencies, 
-  effectively becomes an opponent who knows exactly how the public will lean and can use that knowledge to its advantage. 
-  In summary, behavioral biases among bettors create the conditions for the sportsbook to “always win” 
-  by laying traps in the form of tempting but value-poor odds on the popular side.</p>
 
 <h2>Time-Series and Regression Analysis</h2>
 <p>The statistical analysis reinforces the findings and shows that these patterns have been relatively consistent over time. 
   In our logistic regression model described earlier, the coefficient on the public betting percentage was indeed negative and 
-  highly significant (p &lt; 0.01). Interpreting the coefficient: for a 10 percentage-point increase 
+  statistically significant (p &lt; 0.01). Interpreting the coefficient: for a 10 percentage-point increase 
   in the public bet share on the favorite, the odds of the favorite covering the spread decreased markedly 
   (our estimate suggests roughly a 40–50% reduction in odds of covering per +10% public support, 
   holding other factors constant). For example, if a game had a near-even split (50% of bets on the favorite), 
@@ -378,29 +379,7 @@
   make more rational choices. For example, a disciplined bettor might consciously avoid betting a popular favorite in
   the Super Bowl simply because “everyone thinks they’ll win easily,” and might look for reasons to back the underdog
   or pass the bet if no value is present. Our findings support those contrarian instincts.</p>
-
-<h2>Conclusion</h2>
-<p>The house, as the saying goes, “always wins” – and our analysis of NBA Finals and NFL Super Bowl betting from 2010 
-  to 2024 provides strong evidence to back up that adage in the context of sports wagering. We have shown that sportsbooks
-  consistently exploit public biases, setting lines that entice bettors on to one side while subtly tilting the odds in favor of the other.
-  The majority of bettors, favoring big-name teams and high-scoring games, have paid a price for those preferences: 
-  public favorites and popular overs have yielded subpar winning percentages against the spread, translating into real
-  financial losses for the betting public and corresponding gains for bookmakers. These results hold across a decade and a 
-  half of championship games, indicating a persistent market imbalance driven by predictable human behavior.</p>
-
-<p>Our study marries empirical sports betting outcomes with behavioral theory, demonstrating how phenomena like overconfidence, 
-  recency bias, and the tendency to “bet with your heart” manifest in aggregate betting patterns. The implications extend beyond
-  just these games; they speak to the importance of understanding bettor psychology in any market setting. In markets where one
-  side (here, the bookmaker) can anticipate the other side’s systematic errors, that knowledge becomes a source of profit. 
-  Sportsbooks have effectively turned public sentiment into a revenue stream, particularly in the games that attract the most public action.
-  The championship games are where the sportsbooks’ confidence in their models and the public’s passion/folly collide – and as the data shows,
-  the sportsbooks have largely been winning these battles.</p>
-
-<p>It is worth noting that no individual game is a guaranteed win for the house – indeed, there are Super Bowls and 
-  Finals games where the popular side covers and bettors celebrate. But over a sufficient sample, the scales tip in favor of the bookmaker.
-  Our research quantifies this effect and highlights its causes, contributing to the literature on betting market efficiency and providing 
-  practical insight for participants in these markets.</p>
-
+  
 <h2>Policy Implications</h2>
 <p>The findings of this paper carry several implications for stakeholders and regulators in the sports betting industry. 
   First and foremost, there is a consumer protection angle: as sports betting becomes legal in more jurisdictions and more casual 
@@ -437,6 +416,28 @@
   participants are at least aware of the pitfalls of blindly following the crowd. In the end, people will still bet with their 
   hearts and on their heroes, especially when a title is on the line – but those who understand the game behind the game will recognize
   why, more often than not, the house always wins.</p>
+
+<h2>Conclusion</h2>
+<p>The house, as the saying goes, “always wins” – and our analysis of NBA Finals and NFL Super Bowl betting from 2010 
+  to 2024 provides strong evidence to back up that adage in the context of sports wagering. We have shown that sportsbooks
+  consistently exploit public biases, setting lines that entice bettors on to one side while subtly tilting the odds in favor of the other.
+  The majority of bettors, favoring big-name teams and high-scoring games, have paid a price for those preferences: 
+  public favorites and popular overs have yielded subpar winning percentages against the spread, translating into real
+  financial losses for the betting public and corresponding gains for bookmakers. These results hold across a decade and a 
+  half of championship games, indicating a persistent market imbalance driven by predictable human behavior.</p>
+
+<p>Our study marries empirical sports betting outcomes with behavioral theory, demonstrating how phenomena like overconfidence, 
+  recency bias, and the tendency to “bet with your heart” manifest in aggregate betting patterns. The implications extend beyond
+  just these games; they speak to the importance of understanding bettor psychology in any market setting. In markets where one
+  side (here, the bookmaker) can anticipate the other side’s systematic errors, that knowledge becomes a source of profit. 
+  Sportsbooks have effectively turned public sentiment into a revenue stream, particularly in the games that attract the most public action.
+  The championship games are where the sportsbooks’ confidence in their models and the public’s passion/folly collide – and as the data shows,
+  the sportsbooks have largely been winning these battles.</p>
+
+<p>It is worth noting that no individual game is a guaranteed win for the house – indeed, there are Super Bowls and 
+  Finals games where the popular side covers and bettors celebrate. But over a sufficient sample, the scales tip in favor of the bookmaker.
+  Our research quantifies this effect and highlights its causes, contributing to the literature on betting market efficiency and providing 
+  practical insight for participants in these markets.</p>
 
 <h2>References</h2>
 <ol>
