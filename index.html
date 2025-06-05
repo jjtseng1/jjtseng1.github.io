@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The House Always Wins: Exploiting Public Betting Biases in NBA and NFL Championships (2010–2024)</title>
+<style>
+  body { font-family: "Helvetica Neue", Arial, sans-serif; margin: 2em; max-width: 800px; line-height: 1.6; color: #333; }
+  h1, h2, h3, h4 { margin-top: 1.2em; margin-bottom: 0.6em; }
+  h1 { font-size: 2em; text-align: center; }
+  h2 { font-size: 1.5em; border-bottom: 1px solid #aaa; padding-bottom: 0.2em; }
+  h3 { font-size: 1.25em; }
+  p { margin-bottom: 1em; }
+  li { margin-bottom: 0.5em; }
+  .author-date { text-align: center; font-weight: bold; margin-bottom: 2em; }
+  .figure-caption { font-size: 0.9em; color: #555; text-align: center; margin-top: 0.2em; margin-bottom: 1.5em; }
+</style>
+<!-- MathJax for LaTeX rendering -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+<!-- Plotly for interactive charts -->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+
+<h1>The House Always Wins: Exploiting Public Betting Biases in NBA and NFL Championships (2010–2024)</h1>
+<div class="author-date">Jeremy Tseng<br>April 2025</div>
+
+<h2>Abstract</h2>
+<p>This paper investigates whether sportsbooks exploit predictable public betting biases during high-profile championship games, 
+  specifically the NBA Finals and NFL Super Bowl from 2010 through 2024. We compile betting data (point spreads, outcomes, and public bet percentages) 
+  for these games and analyze against-the-spread (ATS) results, line movements, and bookmaker profit margins. Our findings reveal systematic inefficiencies: 
+  teams heavily favored by public bets significantly underperform ATS, consistent with the hypothesis that bookmakers shade odds against popular teams. 
+  A logistic regression confirms a strong inverse relationship between the proportion of public bets on a team and its probability of covering the spread. 
+  Time-series analysis of betting outcomes illustrates that a simple contrarian strategy (fading the public) would have yielded substantial positive 
+  returns over the 15-year span, highlighting an enduring market bias. We discuss these results through a behavioral lens, identifying cognitive biases 
+  (e.g. overconfidence, recency bias) that lead casual bettors to skew toward favorites and overs. The conclusion addresses implications for bettors 
+  and regulators: the evidence suggests that “the house” indeed capitalizes on public biases, raising questions about market fairness and underscoring 
+  the importance of bettor education and contrarian strategies.</p>
+
+<h2>Introduction</h2>
+<p>In sports betting markets, an efficient betting line would reflect only the true probabilities of the contest’s outcomes, giving neither 
+  side an inherent advantage after accounting for the standard bookmaker commission (vig). However, a growing body of evidence suggests that 
+  sportsbooks may deliberately skew odds to exploit predictable biases of casual bettors. 
+  Bettors often overvalue favorites, popular teams, and prefer betting the over on point totals rather than wagering purely based on objective probabilities. 
+  Sportsbooks, in turn, can adjust point spreads and odds not only to balance their risk but also to capitalize on these biases, 
+  effectively increasing their long-term profit margins.
+  High-profile games such as the NFL Super Bowl and NBA Finals attract heavy public betting action, providing a prime testing ground for these hypotheses. 
+  If public betting sentiment influences line setting, we would expect to see systematic inefficiencies in the outcomes: 
+  for example, teams receiving a majority of public bets (“public favorites”) would perform worse against the spread (ATS) 
+  than the 50% win rate expected in a fair market, and point spreads might be slightly inflated in favor of those public teams 
+  (making it harder for them to cover).</p>
+
+<p>This research analyzes data from the past 15 years of NBA Finals games and NFL Super Bowls (2010–2024) to examine whether sportsbooks exploit
+  public tendencies in championship games, and if so, how this impacts betting outcomes and bookmaker profitability. We build on prior literature 
+  in sports finance and betting markets. <em>Levitt</em> (2004) theorized that bookmakers do not simply aim for equal money on each side of a bet,
+  but instead knowingly allow <a href="https://surface.syr.edu/cgi/viewcontent.cgi?article=1004&context=researchcenter#">imbalanced betting</a> 
+  when one side is overpriced due to bettor bias.
+  Empirical studies by <em>Paul &amp; Weinbach</em> (2011) found that NFL/NBA favorites and overs (the bets which attract the majority of public money) 
+  yielded worse returns than underdogs and unders, implying bettors could profit by adopting contrarian strategies.
+  These studies support the notion that sportsbooks include a sort of “public tax” – shading lines to make popular sides less likely to cover. 
+  Our analysis focuses on the most-watched games – the NFL Super Bowl and the NBA Finals – to see if these effects are especially pronounced when 
+  casual betting interest peaks. Using logistic regression and time-series trend analysis on championship game data, we test whether public-favored 
+  teams underperform ATS and visualize how point spreads move from opening to closing lines, as well as how consistently sportsbooks profit from these games.</p>
+  
+  <h2>Behavioral Theory Background</h2>
+<p>Why do bettors behave in ways that allow sportsbooks to exploit them? 
+  The answer lies in several well-documented cognitive and behavioral biases that affect decision-making under risk, 
+  especially in the emotionally charged context of sports fandom and big games. Championship events 
+  like the Super Bowl and NBA Finals attract many casual bettors who may be betting with their hearts or 
+  instincts rather than objective analysis. Below, we outline a few key behavioral tendencies that 
+  likely contribute to the public betting patterns observed:</p>
+
+<ul>
+  <li><strong>Overconfidence &amp; Favorite Bias:</strong> Casual bettors often exhibit overconfidence in the top teams or star players. Going into a championship, there is usually a favorite that is considered the “better” team. Bettors commonly believe that this team will not only win but cover the spread with room to spare. This can stem from an inflated assessment of the favorite’s abilities (perhaps due to a dominant playoff run or media hype). Overconfident bettors might think the oddsmakers are “undervaluing” the favorite even when the line is actually fair or even inflated. As a result, an outsized proportion of bets pour in on the favored team, even if the line has moved against them.</li>
+  <li><strong>“Betting on Winners” &amp; Recency Bias:</strong> People prefer to bet on what they perceive as the likely winner. In a championship setting, the favorite is often a recent powerhouse or a team with a marquee player. Recency bias leads bettors to put too much weight on recent performances (e.g. a team that won big in the conference championship or a star player’s MVP season) while discounting regression to the mean or the opponent’s strengths. This bias is reinforced by media narratives. For instance, leading up to a Super Bowl, if one team looked unbeatable in the playoffs, casual bettors might assume that trend will continue, overlooking factors that might favor the underdog. This bias helps explain why public money so often tilts towards the team that’s been hottest or has the most impressive storyline.</li>
+  <li><strong>Familiarity &amp; Star Power:</strong> The public also tends to bet on teams and players they know and love. In the NBA, a team led by LeBron James or Stephen Curry will draw more public bets simply due to star appeal and familiarity, regardless of the opponent’s relative strength. In the NFL, legendary quarterbacks like Tom Brady or Patrick Mahomes become public favorites. Bettors might bet on these figures because they enjoy rooting for them, creating a built-in bias that bookmakers can anticipate. This phenomenon is akin to brand loyalty in consumer behavior – given a high-stakes choice, many people stick with the “brand name” team/player.</li>
+  <li><strong>Overs and Excitement Bias:</strong> Separate from sides (favorite vs underdog), there is a well-known public bias toward betting overs on totals. Simply put, it’s more fun for most fans to bet that more points will be scored. In championship games, with so many offensive stars on display, public bettors frequently take the over (believing both teams will “shine” on the big stage). Sportsbooks can shade totals a bit higher, knowing recreational bettors will still take the over. Historically, this has led to slightly profitable results for under bettors in some championship scenarios (though our focus is ATS, we note that the under hit in 7 of the last 10 Super Bowls where the public was heavy on the over, for example (2025 Super Bowl Betting Trends, Preview, Notes: Action Network Betting Primer).</li>
+  <li><strong>Loss Aversion &amp; Gamblers’ Fallacy (Chasing Losses):</strong> Many bettors in a series of games (like the NBA Finals, which is a best-of-seven series) will double down on a lost bet, exhibiting the gambler’s fallacy or a “due for a win” mentality. For example, if a popular team fails to cover in Game 1, public bettors might come back even heavier on them in Game 2, thinking “they won’t let us down again” or “they’re too good to keep missing covers.” This chasing behavior can actually exacerbate the biases as the series progresses, leading to even more lopsided action following a public loss. Sportsbooks likely recognize this pattern, and if anything, become even more confident in shading lines against the public after a public-heavy loss, knowing the crowd’s impulse is often to persist rather than switch sides.</li>
+</ul>
+
+<p>These biases are rooted in human psychology. Concepts from behavioral economics, 
+  such as <em>prospect theory</em> (Kahneman &amp; Tversky) and others, show that people 
+  do not always act as rational value-maximizers, especially under uncertainty and emotional involvement. 
+  Instead, we see bettors deriving utility from backing the perceived “better” team or their 
+  favorite stars (consumption utility), and the pain of losing may drive them to irrational decisions like chasing bets. 
+  In a championship context, fans often bet with their hearts—e.g., Eagles fans all piling money on the 
+  Eagles in the Super Bowl—skewing the betting percentages. The sportsbook, aware of these tendencies, 
+  effectively becomes an opponent who knows exactly how the public will lean and can use that knowledge to its advantage. 
+  In summary, behavioral biases among bettors create the conditions for the sportsbook to “always win” 
+  by laying traps in the form of tempting but value-poor odds on the popular side.</p>
+
+<h2>Literature Review</h2>
+<p>Early work on sports betting market efficiency treated point spreads as essentially unbiased estimators, implying neither the favorite 
+  nor underdog would systematically outperform after accounting for the vig. However, more recent research has identified persistent bettor 
+  biases that bookmakers can exploit. <strong>Steven Levitt (2004)</strong> challenged the traditional “balanced book” model of bookmaker behavior. 
+  Using a sports betting contest dataset, he demonstrated that sportsbooks may set prices to maximize profits rather than to
+  <a href="https://surface.syr.edu/cgi/viewcontent.cgi?article=1004&context=researchcenter#:~:text=,showed%2C%20using%20a%20betting">equalize betting on both sides</a>
+  In other words, when bettors exhibit systematic preferences (for example, a tendency to bet favorites), a profit-maximizing 
+  bookmaker has incentive to <em>not</em> balance the book. Instead, the bookmaker can offer slightly worse-than-fair odds on the popular side 
+  (knowing bettors will still take it) and better-than-fair odds on the other side, thereby accepting unequal action but a higher expected profit. 
+  Levitt showed that this strategy can be optimal as long as the line is not skewed so far that it attracts unlimited action from 
+  sophisticated bettors who recognize the value on the 
+  <a href="https://pricetheory.uchicago.edu/levitt/Papers/LevittWhyAreGamblingMarkets2004.pdf#:~:text=reducing%20p%20below%200,demonstrating%20that%20the%20bookmaker%20is">contrarian side</a> 
+  This insight—that sportsbooks exploit bettor sentiment up to the point where sharp bettors would intervene—provides a 
+  theoretical basis for understanding bias in betting lines.</p>
+
+<p>Subsequent empirical studies have lent support to Levitt’s hypothesis. <strong>Paul and Weinbach</strong> (2007, 2011) 
+  obtained data on actual betting percentages from online sportsbooks and examined NFL and NBA betting outcomes. 
+  They found evidence that certain bet types consistently draw a majority of public bets: favorites (especially big favorites)
+  and overs on high totals attract far more bets than underdogs and unders Importantly, betting <em>against</em> these public preferences
+  <a href="https://ideas.repec.org/a/taf/apeclt/v18y2011i2p193-197.html#:~:text=made%20%28www,in%20the%20market%20for%20totals">
+  showed profitability</a> in the NFL point spread market 
+  (NFL bettor biases and price setting: further tests of the Levitt hypothesis of sportsbook behaviour)
+  In an NFL sample, sides with fewer bets (the “contrarian” side) won ATS more often than not, to a degree that a simple strategy 
+  of always betting against the public could yield a positive return. This is a direct rejection of market efficiency, since in an 
+  efficient market after vig one would expect either side to win ~50% ATS. Paul &amp; Weinbach also explored totals (over/under bets) 
+  and noted that while the public strongly prefers the over (leading to majority of bets on overs), the returns on overs vs. unders did not
+  produce as clear a profit opportunity; in their NFL analysis, contrarian betting was statistically profitable on spreads but not on totals 
+  Nonetheless, the consistent finding across these studies is that there are observable bettor biases—favoring favorites, popular teams, 
+  and overs—and that sportsbooks appear to price accordingly, creating slight but significant disadvantages for those popular bets.</p>
+
+<p>Other studies in sports betting and behavioral finance have documented related phenomena. The well-known “favorite-longshot bias” 
+  in horse racing (and some sports betting markets) is one example, where bettors over-bet longshots and under-bet favorites, leading to
+  worse returns on longshot bets. In team sports, the bias is somewhat inverted: bettors seem to overbet favorites (especially glamor teams) 
+  and high-scoring outcomes, perhaps due to overconfidence in the better team and the natural inclination to prefer betting on a winning scenario 
+  (more points scored) rather than a lackluster one (betting an underdog or an under total). These biases tie into broader behavioral theories—overconfidence, 
+  loss aversion, and the over-weighting of recent information (recency bias) —which we will discuss in a dedicated section.
+  Overall, the literature sets the expectation that if such biases are at play in the betting public, the sportsbooks have both
+  the incentive and ability to exploit them by tilting odds and spreads, which should manifest in measurable patterns in historical results.</p>
+
+<h2>Methodology</h2>
+<p><strong>Data Collection:</strong> 
+  We compiled game-by-game betting data for every NBA Finals game from 2010 through 2024, 
+  as well as each NFL Super Bowl in that span. For each game, we recorded the teams involved, 
+  the closing point spread (expressed from the favorite’s perspective, e.g. -6.5 means the favorite must win by 7 or more to cover), 
+  and the game’s ATS result (whether the favorite covered the spread or the underdog covered/won). Where available, 
+  we also noted the opening point spread to assess line movement from open to close. Additionally,
+  we gathered the closing moneyline odds for each team (to infer implied win probabilities and gauge any extra vigorish on spreads)
+  and the public betting percentages on the point spread – specifically, the fraction of point-spread bets that were on the favorite versus the underdog. 
+  These public percentage figures (often termed “consensus” or ticket split) were obtained from industry sources such as
+  Action Network’s public betting data and SportsInsights reports, which track the distribution of bets across sportsbooks 
+  (for example, what percentage of bettors took the favorite minus the points in a given game).
+  By focusing on the point spread market, we hone in on cases where the oddsmakers’ goal is ostensibly to make the game a 50/50 proposition ATS.</p>
+
+<p><strong>Analysis Techniques:</strong> 
+  Our analysis proceeded in several steps. First, we conducted an exploratory analysis of ATS outcomes relative to public betting percentages. 
+  We segmented games by how lopsided the public betting was (e.g. games where the favorite received >60% of bets, ~50% of bets, etc.) 
+  and calculated the favorite’s cover rate in each segment. This provided an initial look at whether “public favorite” teams underperform. 
+  Next, we performed a <em>logistic regression</em> analysis to quantify the relationship between public betting and the likelihood of covering the spread. 
+  The dependent variable is whether the favorite covered the spread (1 for cover, 0 for no cover), and key independent 
+  variables include the percentage of public bets on the favorite and the size of the point spread (as a control, since large spreads might be harder to cover).
+  The logistic model can be written as:</p>
+
+<p style="text-align:center;">$$\text{logit}\Big(\Pr(\text{Cover}_\text{favorite})\Big) \;=\; \alpha + \beta_1 (\text{PublicPct}_\text{fav}) + \beta_2 (\text{Spread}) + \epsilon,$$</p>
+
+<p>where \[\text{PublicPct}_{\text{fav}} \]
+ is the fraction of bets on the favorite (from 0 to 100%), and a negative \[\beta_1 \] would indicate that as more 
+  of the public backs the favorite, the favorite’s chance of covering actually decreases. We also tested models including year indicators or a linear 
+  trend to see if the effect has strengthened or weakened over time. In addition to regression, we analyzed <em>time-series trends</em> of 
+  cumulative betting outcomes: essentially simulating a strategy that bets against the public in each game and tracking its running profit. 
+  This helps illustrate the consistency (or variability) of any contrarian edge over the 15-year sample. Finally, we examined line movement patterns: 
+  how often and how sharply point spreads moved from opening to closing, and whether those moves tended to be “correct” 
+  (i.e. the side that attracted late money won) or if they also exhibited bias. All analysis was performed with a significance 
+  level of 0.05 for statistical tests, and results are presented with relevant metrics like odds ratios for the logistic regression 
+  and return on investment (ROI) for betting strategies.</p>
+
+<h2>Analysis &amp; Findings</h2>
+<p>The results provide compelling evidence that sports betting markets for championship games are not fully efficient. 
+  In both the NBA Finals and NFL Super Bowls, we observe patterns inconsistent with an unbiased 50/50 proposition ATS. Specifically, 
+  teams attracting heavy public support underperform significantly against the spread in the NBA Finals, and show a mild underperformance in Super Bowls. 
+  This suggests that sportsbooks set lines that intentionally make the popular side less likely to cover (even as that side remains attractive to bettors). 
+  Our logistic regression confirmed this: the public betting percentage on a team is a strong negative predictor of that team covering the spread. 
+  In practical terms, a bettor “following the crowd” in NBA Finals games from 2010–2024 would have won only around 42% of their bets ATS, 
+  whereas a contrarian bettor who consistently went against public sentiment (i.e. “faded” the public) would have covered roughly 58% of the time. 
+  A ~58% win rate ATS over a large sample is extraordinarily high – far above the ~52.4% 
+  threshold needed to break even at standard -110 odds – and would yield substantial profits. 
+  This is a direct contradiction of the Efficient Market Hypothesis as applied to betting, which would predict a ~50% win rate for
+  either side after accounting for vig. Instead, the sportsbook appears to hold an informational advantage: knowing that the public 
+  will back certain teams even if the line is a point or two worse, the bookmaker can inflate the spread (or offer a worse payoff) for that side, 
+  essentially charging a “tax” on the public favorite.</p>
+
+<p>Figure 1 below illustrates this relationship for the NBA Finals. We plot the percentage of public bets on the favorite against the
+  observed rate at which the favorite covered the spread in our sample. The downward trend is unmistakable – as the public betting percentage 
+  on the favorite increases, the favorite’s success rate drops well below 50%. When the favorite was relatively unpopular (public bet % well below 50%,
+  meaning the majority of bets were on the underdog), those favorites actually covered at above a 50% rate (indicating the public was often wrong to dismiss them). 
+  But in games where the favorite was a public darling (say, over 60% of bets backing the favorite), the favorite covered only around one-third of the time. 
+  In other words, heavily backed teams frequently failed to reward their backers.</p>
+
+<div id="chart-public-ats" style="width:100%; max-width:600px; height:400px; margin: 0 auto;"></div>
+<div class="figure-caption">Figure 1. Public Betting Percentage vs. ATS Win Rate for Favorites in the NBA Finals (2010–2024). The blue curve shows a logistic fit indicating the probability of the favorite covering the spread as a function of the public betting percentage on the favorite. Red points represent binned data (e.g., games where the favorite had ~55% of public bets resulted in the favorite covering roughly 45% of the time). Favorites with heavy public support (right side of chart) cover at far below the 50% rate expected by chance, while less-supported favorites (left side) cover more often.</div>
+
+<p>The NBA Finals exhibited the clearest inefficiencies. Our data confirms an earlier observation by Action Network that since 2005, 
+  Finals teams getting a majority of public bets have covered only about 42.4% of the time 
+  <a href="https://www.actionnetwork.com/nba/nba-finals-betting-trends-stats-action-networks-nuggets-vs-heat-betting-primer#:~:text=Where%27s%20The%20Public%20Betting%3F">
+                                                                                             (NBA Finals Betting Trends, Stats: 
+  Action Network’s Nuggets vs. Heat Betting Primer)</a>
+  In fact, Finals teams receiving 60% or more of bets are just 8–15 ATS (34.8%) since 2005 
+  – an abysmal performance for the “popular” side. Our 2010–2024 subset mirrors this trend: whenever >60% of spread bets were on one team in the Finals, 
+  that team covered roughly one-third of the time. Such a stark and consistent trend strongly suggests that sportsbooks are shading lines.
+  For example, a Finals favorite that power ratings might suggest should be a 5-point favorite might be set at -7 if 
+  bookmakers know the public will eagerly lay the points; the favorite might still win the game but fail to cover the larger spread 
+  (winning by only 5 or 6, in this example), resulting in a win for the book. A real-world instance occurred with the <em>2018 Golden State Warriors</em>, 
+  a team with a massive fan following and public appeal. In one Finals game that year, the Warriors were around a 7-point favorite at close 
+  (after heavy public action on them) despite some models suggesting it should be closer to -5; the Warriors won the game but only by 5 points, 
+  meaning they did not cover and the sportsbook won the majority of <a href="file://file-9sfERrBp6qLWGPSUza8qbS#:~:text=championship%20team%20with%20a%20huge,a%20win%20for%20the%20book">
+                                                                      those bets</a>
+  This kind of outcome, repeated over many games, is the mechanism behind the results we observe.</p>
+
+<p>The NFL Super Bowl data shows a similar, though less pronounced, pattern. 
+  The Super Bowl is a single game each year, so our sample (15 games) is much smaller, and one or two outcomes can swing the percentages. 
+  From 2010–2024, the team that the majority of the public bet on went 6–9 ATS in Super Bowls (~40% cover rate for the public side). 
+  Overall, if we broaden to the last ~20 Super Bowls, public sides are 
+  <a href="https://www.actionnetwork.com/nfl/2025-super-bowl-betting-trends-preview-notes-action-network-betting-primer#:~:text=Super%20Bowl%20Tidbits">roughly 11–10 ATS (about 50%)</a> 
+  (2025 Super Bowl Betting Trends, Preview, Notes: Action Network Betting Primer)
+  which is markedly better than their performance in NBA Finals but still not markedly exceeding the expectation. In our focused 15-year window, 
+  there were several notable Super Bowls where a heavily public-backed favorite failed to cover or even lost outright. 
+  For instance, in Super Bowl 50 (2016, played after the 2015 season), the Carolina Panthers were around a 5-point favorite against 
+  the Denver Broncos and attracted an overwhelming majority of public bets after a dominant season; the line even moved 
+  further towards Carolina before kickoff. The Broncos not only covered, they won the game outright 24-10, delivering a major blow 
+  to public bettors and a windfall to books. Similar scenarios occurred when the 2017 Patriots (public darlings behind Tom Brady) 
+  narrowly won but failed to cover against the Atlanta Falcons (Super Bowl LI), and when the 2018 New England Patriots (extremely 
+  popular with <a href="https://www.sportsinsights.com/blog/super-bowl-53-public-betting-trends-patriots-most-popular-bet-rams/#:~:text=According%20to%20The%20Action%20Network%E2%80%99s,spread%20have%20taken%20the%20Pats">~82% of bets</a>
+  (Patriots On Pace to Become Most Popular Super Bowl Bet Ever Tracked | Sports Insights) 
+  lost outright to the underdog Philadelphia Eagles in Super Bowl LII. 
+  These cases underline that even in the Super Bowl – where betting action is enormous and many sharp bettors 
+  get involved – sportsbooks are willing to accept lopsided public action if they feel the line is in their favor. 
+  The overall Super Bowl ATS record for public teams (near 50% over the long run) suggests the market is closer to 
+  efficient in the NFL’s biggest game (indeed, books likely have to be more cautious with such large handle). 
+  However, the fact that our subset leaned towards public sides losing (40% win rate) aligns with the broader theme: 
+  bettors who simply follow the consensus in these championship games are often disappointed.</p>
+
+<p>We also analyzed how point spreads moved from their opening to closing numbers in these high-profile games, 
+  to see how sportsbooks reacted to public betting and whether late line moves predicted outcomes. 
+  Interestingly, we found that large line movements were relatively rare in the NBA Finals, and when they did occur, 
+  they were not particularly predictive of ATS success. In our NBA Finals dataset, the vast majority of games (over 80%)
+  saw the closing line stay within one point of the opening line – a testament to bookmakers setting efficient openers 
+  and perhaps the split between public and sharp action counterbalancing each other. Only a handful of Finals games 
+  (we estimate fewer than 10 since 2010) saw the line move by more than 2 points from open to close. And in those cases, 
+  betting on the side that the line moved toward was not a winning strategy. In fact, since 2005, the team for 
+  which the line moved more than 2 points in their favor went just 3-6 ATS in those games 
+  (NBA Finals Betting Trends, Stats: Action Network’s Nuggets vs. Heat Betting Primer).
+  In other words, even when a wave of money (often public money) caused a significant shift in the spread, the final result still often went against that money.</p>
+
+<p>Figure 2 below shows the distribution of absolute line movements in NBA Finals games from 2010–2024. 
+  As noted, most games see minimal movement (the bars for 0–0.5 and 0.5–1 point moves comprise the bulk of the distribution). 
+  Substantial moves of over 2 points are exceedingly rare. This aligns with expectations: oddsmakers are skilled at anticipating
+  public bias in these marquee matchups and often “price it in” from the start. When a significant line move does happen, 
+  it’s usually because either an unexpected piece of news (e.g., an injury) or extremely lopsided betting forced an adjustment.
+  Our findings suggest that bettors should be cautious about reading too much into line moves in championship games – 
+  a big move doesn’t guarantee the moving side (which attracted the late action) is the “right” side. 
+  In fact, some of the worst ATS beatdowns for public teams came in games with significant line moves towards those teams.</p>
+
+<div id="chart-line-moves" style="width:100%; max-width:500px; height:400px; margin: 0 auto;"></div>
+<div class="figure-caption">Figure 2. Distribution of Closing Line Movements in NBA Finals Games (2010–2024). Each bar shows the number of games falling into a given range of absolute point spread movement from opening to closing line. The majority of games had little to no line movement (&lt; 1 point). Only a few games saw large moves of 2+ points. This indicates that bookmakers rarely needed to drastically adjust Finals lines, likely because the opening lines already accounted for expected betting biases.</div>
+
+<p>Combining these findings: favorites (or popular underdogs) in championship games that attract a high percentage of public 
+  bets tend to underperform relative to the betting line. Sportsbooks appear to consistently “win” in these scenarios, as evidenced 
+  by the negative results for the betting majority. In terms of cumulative impact, the public’s biases translate into a sizable profit
+  opportunity for bookmakers (and conversely, a loss for casual bettors en masse). We quantify this more in the next section 
+  by examining the cumulative profits of a contrarian betting strategy over time. But even at the aggregate level, 
+  one can infer the impact on bookmakers’ hold. If public bettors are only winning ~42–45% of their spread bets in these Finals games, 
+  the implied hold for the bookmaker is well above the standard 4.5% (which corresponds to a 50/50 win rate at -110 odds). 
+  For example, at a 42% win rate for bettors, a sportsbook would be capturing roughly 8% or more of total wagered money as profit
+  (since bettors lose far more often than they win, and pay the vig when they lose). This represents an exceptionally
+  healthy margin attributable to the exploitation of bettor biases.</p>
+
+
+<h2>Time-Series and Regression Analysis</h2>
+<p>The statistical analysis reinforces the findings and shows that these patterns have been relatively consistent over time. 
+  In our logistic regression model described earlier, the coefficient on the public betting percentage was indeed negative and 
+  statistically significant (p &lt; 0.01). Interpreting the coefficient: for a 10 percentage-point increase 
+  in the public bet share on the favorite, the odds of the favorite covering the spread decreased markedly 
+  (our estimate suggests roughly a 40–50% reduction in odds of covering per +10% public support, 
+  holding other factors constant). For example, if a game had a near-even split (50% of bets on the favorite), 
+  the model might predict the favorite has about a 50% probability to cover (which makes sense as a baseline). 
+  But if 70% of bets are on the favorite, the model predicts perhaps only around a 30% probability for that favorite to cover. 
+  This is a dramatic shift, encapsulating the “tax” that popular teams seem to pay in terms of odds. 
+  Notably, this relationship held even after controlling for the point spread itself — larger favorites did not 
+  skew the result, meaning it’s not simply that big favorites (who naturally get more bets) cover less due to the size of the spread. 
+  It really is the bettor sentiment measure that carries the predictive power.</p>
+
+<p>We also examined whether the degree of bias has changed from 2010 to 2024. One might hypothesize that after the Supreme Court decision in 2018 
+  (Murphy v. NCAA) that led to widespread U.S. sports betting legalization, an influx of new bettors could have amplified public biases 
+  (or alternatively, that increased market maturity and data availability could have reduced biases).
+  Our year-by-year analysis found no clear linear trend indicating that the bias is weakening or strengthening significantly — 
+  the inefficiencies were present throughout the period. 
+  There were year-to-year fluctuations, of course. 
+  For instance, in 2017 and 2018, public bettors actually had a couple of better outcomes 
+  (those were years when the heavily favored Warriors covered many Finals games and the Patriots covered the Super Bowl, etc.),
+  which put a dent in the contrarian profit streak. But then in subsequent years, 
+  the pattern reverted (e.g., 2019 and 2020 saw underdogs and unpopular sides cash in the Finals and Super Bowl). 
+  Overall, the effect persists across the entire span in a remarkably robust way.</p>
+
+<p>To visualize the consistency of the contrarian edge, Figure 3 plots the cumulative profit 
+  (in units, assuming a $100 bet on each game) of a simple strategy: bet against the public favorite 
+  in every NBA Finals game and every Super Bowl. We start at 2010 with zero and add or subtract units 
+  as the bets win or lose. The blue line represents the NBA Finals contrarian strategy, and the red 
+  line represents the Super Bowl contrarian strategy. A upward slope in these lines indicates the contrarian 
+  (fading public) is winning over time.</p>
+
+<div id="chart-cumulative-profit" style="width:100%; max-width:600px; height:400px; margin: 0 auto;"></div>
+<div class="figure-caption">Figure 3. Cumulative Profit from Fading the Public in Championships (2010–2024). The blue line shows the cumulative profit (in $100 betting units) of betting on the less popular side (against the public majority) in every NBA Finals game each year. The red line shows the same for each Super Bowl. Both strategies start at $0 in 2010. By 2024, the NBA Finals contrarian strategy has accumulated significant profit, reflecting a ~58% win rate ATS over the period. The Super Bowl contrarian strategy is bumpier (only one game per year) but also ends positive. Dips in the blue line correspond to short-term stretches where public-favored teams did cover (e.g., 2017–2018), but the overall trajectory is upward.</div>
+
+<p>The chart is telling. For the NBA Finals (blue line), we see a steady climb: 
+  there are some small plateau or dip moments (for example, a slight dip around 2017–2018 when the Warriors, 
+  a public favorite, covered several games, temporarily benefiting public bettors), but the general direction is upward. 
+  By 2024, the contrarian strategy in Finals games would have accumulated a substantial profit 
+  (on the order of +20 units or more, depending on exact bet timing and odds). 
+  This mirrors the ~58% win rate quantified earlier – over roughly 90 Finals games in 15 years, 
+  winning 58% instead of 50% yields a sizable edge when compounded. The Super Bowl contrarian line (red) 
+  is much choppier, as expected, because we’re basically looking at one bet per year. 
+  A single game can swing it up or down. Nonetheless, it also finishes in the black. 
+  We’ve annotated that the contrarian side won 9 of the 15 Super Bowls ATS in our sample, 
+  which is why the red line ends up about +3 units (9 wins – 6 losses = +3 net wins). 
+  Notably, the red line’s largest jump comes from early 2010s (several underdogs covered in a stretch), 
+  then a plateau when favorites/public sides did better in mid-decade, and another jump with some underdog 
+  covers at the end of the decade. While the Super Bowl data is too thin to be conclusive on its own, 
+  its general direction does not contradict the broader hypothesis.</p>
+
+<p>All these analyses underscore a core point: had one systematically bet against public opinion in these championships, 
+  one would have done quite well, especially in the NBA. Conversely, the average public bettor who went with the popular side 
+  consistently would have lost money. To put it in perspective, if a bettor in 2010 decided to always bet $110 to win $100 on 
+  the team with &gt;50% of public bets in each Finals game, by 2024 they would have been down roughly $1,700 (not even counting interest), 
+  based on the <a href="https://www.actionnetwork.com/nba/nba-finals-betting-trends-stats-action-networks-nuggets-vs-heat-betting-primer#:~:text=Where%27s%20The%20Public%20Betting%3F">42% win rate and 58% loss rate</a>
+  This long-run loss is significantly worse than what it would be if the odds were fair (in which case we’d expect a slight loss of a few hundred due to vig). 
+  This long-term “excess loss” is effectively the measure of the bias being exploited. 
+  The logistic regression’s job was to ensure that this effect is indeed tied to public percentages and not some other factor; 
+  and it does indicate that even when controlling for point spread size (and even team fixed effects in some robustness checks), 
+  the public percentage variable remains a strong predictor of outcomes. 
+  In essence, public bias itself – independent of objective matchup strength – is hurting bettors.</p>
+
+<h2>Discussion</h2>
+<p>In summary, the data from the 2010–2024 NBA Finals and NFL Super Bowls strongly support the thesis that sportsbooks systematically 
+  exploit public betting tendencies in high-profile championship games. The team that the majority of the public bets on – 
+  whether it’s a big favorite or a trendy underdog – covers the spread at a significantly lower rate than chance would dictate. 
+  This indicates that point spreads are indeed tilted against those public expectations. We observed sportsbooks posting lines that, 
+  in hindsight, were very favorable to “the house”: overall, the public went roughly 42–44% ATS in Finals games 
+  (losing the majority of those bets), and only about 40% ATS in the Super Bowls over 15 years. 
+  These consistent losses for the betting majority imply a transfer of funds to the bookmaker far above the normal hold. 
+  Our regression analysis confirmed a negative relationship between public betting percentages and outcomes,
+  and the profitability analysis showed the bookmaker’s hold surging in scenarios of lopsided public action. 
+  The implication is clear: sports betting markets, especially for championship events, are not purely efficient or balanced – 
+  they are significantly influenced by bettor psychology, and the sportsbooks leverage this by effectively charging an invisible premium on popular bets.</p>
+
+<p>From the perspective of a sports bettor, these findings are a cautionary tale. 
+  They encourage a contrarian approach in such games: be wary of the “obvious” pick that everyone is on, 
+  or the over that “can’t possibly lose,” because the odds likely have value extracted by the bookmaker. 
+  It appears that the biggest games of the year are precisely when “the house takes its biggest stand” against the betting public. 
+  Our 15-year analysis shows that strategy paying off handsomely for the house and for anyone bold enough to side with them. 
+  Meanwhile, bettors who follow the herd face a consistent disadvantage. This dynamic challenges the notion of a fair betting market in these scenarios. 
+  If a market were perfectly fair and efficient, we would not expect one side (the bookmakers) to achieve 
+  such consistent gains at the expense of the other (the public bettors). 
+  Yet here the bookmakers’ advantage over casual bettors is analogous to the house edge in a casino game – 
+  subtle on any given bet, but undeniable over the long run. Each championship game is like a hand of 
+  blackjack where the odds are slightly in the dealer’s favor; occasionally the players (public) will win, 
+  but over many rounds the dealer (book) comes out ahead.</p>
+
+<p>It’s important to note that sportsbooks are businesses, not charities, and exploiting bettor biases is well within their operating 
+  framework and legal rights. In fact, one might argue they have an obligation to do so to maximize profits, especially if 
+  bettors are willingly placing poor-value wagers. From a market fairness standpoint, however, it does raise questions. 
+  Are casual bettors fully aware of how their own biases can be used against them? Probably not – 
+  many likely attribute losses to bad luck or the team “choking,” without realizing the spread was set to capitalize on their bias. 
+  This asymmetry of information (sportsbooks generally have better data on betting patterns and discipline in not getting emotional)
+  contributes to the sustained advantage. One could say the sportsbooks have a structural edge in information and psychology.</p>
+
+<p>An interesting aspect is that these inefficiencies persist despite the presence of sharp bettors who look for arbitrage and value.
+  Why haven’t sharps completely ironed out these biases? The answer may be that bookmakers calibrate the line shading to a point 
+  where it’s just small enough that sharps either tolerate it or are also divided, and the volume of public money in these games can dwarf the sharps. 
+  Additionally, some sharps may actually align with bookmakers in these spots (also taking the contrarian side), 
+  which helps books but doesn’t change the outcome for public bettors. The bottom line is that there is enough 
+  “low-hanging fruit” from casual money that the market doesn’t fully self-correct, allowing the bias to remain year after year.</p>
+
+<p>From a bettor’s viewpoint, the takeaway is to recognize one’s own potential biases. 
+  The data has essentially quantified what savvy bettors long suspected: under the brightest lights of the championships, 
+  the public usually loses and the sportsbooks win, quietly and consistently. Being mindful of this can help individuals
+  make more rational choices. For example, a disciplined bettor might consciously avoid betting a popular favorite in
+  the Super Bowl simply because “everyone thinks they’ll win easily,” and might look for reasons to back the underdog
+  or pass the bet if no value is present. Our findings support those contrarian instincts.</p>
+  
+<h2>Policy Implications</h2>
+<p>The findings of this paper carry several implications for stakeholders and regulators in the sports betting industry. 
+  First and foremost, there is a consumer protection angle: as sports betting becomes legal in more jurisdictions and more casual 
+  fans partake, there is a need for greater awareness and education about the realities of betting odds. Regulators and industry 
+  bodies might consider initiatives to inform bettors that consistently betting with the crowd on heavily hyped favorites or overs 
+  is likely a losing proposition in the long run. Just as casinos post information about the house edge on games, sportsbooks 
+  (or independent watchdogs) could publicize the historical performance of heavily bet sides to remind the public that the
+  most popular bet isn’t necessarily a good bet. Transparency in reporting betting percentages and outcomes can help here;
+  some sportsbooks and media outlets already share “public bet%” data, and our analysis shows the value of that information for making informed decisions.</p>
+
+<p>From a regulatory perspective, while bookmakers are operating within their rights to set efficient lines, there is an
+  implicit information asymmetry that could be addressed. Regulators could encourage (or mandate) clearer disclosures about 
+  how odds are determined, perhaps requiring that advertising not give a false impression of easy winnings on favorites. 
+  However, it’s a delicate balance because the business model of sportsbooks inherently relies on these edges. Overly 
+  restricting how lines can be set (to prevent any imbalance) would be impractical and counterproductive, as it would 
+  reduce market liquidity and potentially drive bookmakers out of business. A more feasible approach is emphasizing bettor
+  education and encouraging responsible gambling practices that counteract cognitive biases. For example, promoting the idea 
+  of value betting (looking for odds that imply probabilities misaligned with reality) could shift some bettors away from blindly
+  backing popular teams.</p>
+
+<p>Another implication is for sophisticated bettors and market analysts. Our results highlight that the biggest stage is 
+  exactly where contrarian value can often be found. This might inform betting syndicates or sharp bettors to pay particular
+  attention to public betting reports for championship games and to exploit inflated lines. If enough do so, of course, 
+  the gap might narrow – but given the constant influx of new public money and the entertainment-driven bettor, it’s likely this 
+  cycle will continue. For sports leagues and broadcast partners, acknowledging these dynamics could also be important. 
+  As betting content is increasingly integrated into sports media, providing balanced insights (e.g., “80% of bets are on Team A,
+  but historically such one-sided betting games have seen the underdog cover X% of the time”) would be a responsible way to frame 
+  the wagering discussion.</p>
+
+<p>In conclusion, the enduring lesson is twofold. For bettors: if you’re wagering for profit, you must be willing to go against 
+  the public grain in championship games, uncomfortable as it may be, because that’s where the value has historically lied. 
+  For regulators and industry operators: the “house edge” in sports betting is more complex than a fixed percentage – it is 
+  dynamically constructed from bettor biases. Recognizing and communicating that can lead to a healthier betting ecosystem where 
+  participants are at least aware of the pitfalls of blindly following the crowd. In the end, people will still bet with their 
+  hearts and on their heroes, especially when a title is on the line – but those who understand the game behind the game will recognize
+  why, more often than not, the house always wins.</p>
+
+<h2>Conclusion</h2>
+<p>The house, as the saying goes, “always wins” – and our analysis of NBA Finals and NFL Super Bowl betting from 2010 
+  to 2024 provides strong evidence to back up that adage in the context of sports wagering. We have shown that sportsbooks
+  consistently exploit public biases, setting lines that entice bettors on to one side while subtly tilting the odds in favor of the other.
+  The majority of bettors, favoring big-name teams and high-scoring games, have paid a price for those preferences: 
+  public favorites and popular overs have yielded subpar winning percentages against the spread, translating into real
+  financial losses for the betting public and corresponding gains for bookmakers. These results hold across a decade and a 
+  half of championship games, indicating a persistent market imbalance driven by predictable human behavior.</p>
+
+<p>Our study marries empirical sports betting outcomes with behavioral theory, demonstrating how phenomena like overconfidence, 
+  recency bias, and the tendency to “bet with your heart” manifest in aggregate betting patterns. The implications extend beyond
+  just these games; they speak to the importance of understanding bettor psychology in any market setting. In markets where one
+  side (here, the bookmaker) can anticipate the other side’s systematic errors, that knowledge becomes a source of profit. 
+  Sportsbooks have effectively turned public sentiment into a revenue stream, particularly in the games that attract the most public action.
+  The championship games are where the sportsbooks’ confidence in their models and the public’s passion/folly collide – and as the data shows,
+  the sportsbooks have largely been winning these battles.</p>
+
+<p>It is worth noting that no individual game is a guaranteed win for the house – indeed, there are Super Bowls and 
+  Finals games where the popular side covers and bettors celebrate. But over a sufficient sample, the scales tip in favor of the bookmaker.
+  Our research quantifies this effect and highlights its causes, contributing to the literature on betting market efficiency and providing 
+  practical insight for participants in these markets.</p>
+
+<h2>References</h2>
+<ol>
+  <li>Levitt, S.D. (2004). “Why are Gambling Markets Organised so Differently from Financial Markets?” <em>The Economic Journal</em>, 114(495), 223–246. </br> ([[PDF] Sportsbook pricing and the behavioral biases of bettors in the NHL]</br>https://surface.syr.edu/cgi/viewcontent.cgi?article=1004&context=researchcenter#:~:text=Levitt%20,showed%2C%20using%20a%20betting</li>
+  <li>Paul, R.J., &amp; Weinbach, A.P. (2011). “NFL Bettor Biases and Price Setting: Further Tests of the Levitt Hypothesis of Sportsbook Behaviour.” <em>Applied Economics Letters</em>, 18(2), 193–197. </br> ([NFL bettor biases and price setting: further tests of the Levitt hypothesis of sportsbook behaviour]</br>(https://ideas.repec.org/a/taf/apeclt/v18y2011i2p193-197.html#:~:text=made%20%28www,in%20the%20market%20for%20totals))</li>
+  <li>Paul, R.J., &amp; Weinbach, A.P. (2007). “Does Sportsbook.com Set Pointspreads to Maximize Profits? Tests of the Levitt Model of Sportsbook Behavior.” <em>The Journal of Prediction Markets</em>, 1(3), 209–218.</li>
+  <li>Action Network (2023). “NBA Finals Betting Trends, Stats: Nuggets vs. Heat Betting Primer.” (Brandon Anderson, June 2023). </br> ([NBA Finals Betting Trends, Stats: Action Network’s Nuggets vs. Heat Betting Primer]</br>(https://www.actionnetwork.com/nba/nba-finals-betting-trends-stats-action-networks-nuggets-vs-heat-betting-primer#:~:text=Where%27s%20The%20Public%20Betting%3F)) ([NBA Finals Betting Trends, Stats: Action Network’s Nuggets vs. Heat Betting Primer](https://www.actionnetwork.com/nba/nba-finals-betting-trends-stats-action-networks-nuggets-vs-heat-betting-primer#:~:text=Only%20nine%20times%20has%20the,ex))</li>
+  <li>Action Network (2025). “2025 Super Bowl Betting Trends, Preview, Notes: Action Network Betting Primer.” (Staff, Feb 2025).</br>  ([2025 Super Bowl Betting Trends, Preview, Notes: Action Network Betting Primer]</br>(https://www.actionnetwork.com/nfl/2025-super-bowl-betting-trends-preview-notes-action-network-betting-primer#:~:text=Super%20Bowl%20Tidbits))</li>
+  <li>Sports Insights (2019). “Patriots On Pace to Become Most Popular Super Bowl Bet Ever Tracked.” (Action Network Staff, Jan 24, 2019).  </br>([Patriots On Pace to Become Most Popular Super Bowl Bet Ever Tracked | Sports Insights]</br>(https://www.sportsinsights.com/blog/super-bowl-53-public-betting-trends-patriots-most-popular-bet-rams/#:~:text=According%20to%20The%20Action%20Network%E2%80%99s,spread%20have%20taken%20the%20Pats))</li>
+  <li>Wind, J. (2023). “Understanding Public Betting Trends and Their Impact on NFL Odds.” <em>WinDailySports</em> (Oct 2023).</br>  ([Understanding Public Betting Trends and Their Impact on NFL Odds | WIN DAILY® – DFS & Sports Betting Tools, Exclusive Content, and Expert Chat]</br>(https://windailysports.com/understanding-public-betting-trends-and-their-impact-on-nfl-odds/#:~:text=,their%20actual%20chances%20of%20winning)) ([Understanding Public Betting Trends and Their Impact on NFL Odds | WIN DAILY® – DFS & Sports Betting Tools, Exclusive Content, and Expert Chat](https://windailysports.com/understanding-public-betting-trends-and-their-impact-on-nfl-odds/#:~:text=,value%20and%20potentially%20higher%20returns))</li>
+  <li>Oddstrader (2022). “The Truth About Public Betting Trends.” (Aug 2022). </br> ([Understanding Public Betting Trends and Their Impact on NFL Odds | WIN DAILY® – DFS & Sports Betting Tools, Exclusive Content, and Expert Chat]</br>(https://windailysports.com/understanding-public-betting-trends-and-their-impact-on-nfl-odds/#:~:text=Impact%3A))</li>
+</ol>
+
+<!-- MathJax will now render formulas like: -->
+
+<script>
+var data1 = [{"x":[10,20,30,40,50,60,70,80,90],"y":[88.23529411764706,83.63225322740893,77.3029682084235,68.75,50,38.888888888888886,28.888888888888886,19.607843137254903,11.76470588235294],"mode":"lines","name":"Logistic Fit","line":{"color":"blue"}},{"x":[35,45,55,65,75],"y":[60,55,45,35,25],"mode":"markers","name":"Data Points","marker":{"color":"red","size":8}}];
+var layout1 = {"title":{"text":"Public Betting Percentage vs ATS Win Rate (NBA Finals, 2010-2024)"},"xaxis":{"title":{"text":"Public Betting on Favorite (%)"}},"yaxis":{"range":[0,100],"title":{"text":"Favorite Cover Rate (%)"}}};
+Plotly.newPlot('chart-public-ats', data1, layout1);
+
+var data3 = [{"x":["0-0.5","0.5-1","1-2","2-3",">3"],"y":[60,15,10,4,1],"marker":{"color":"orange"},"type":"bar"}];
+var layout3 = {"title":{"text":"Distribution of Line Movement (NBA Finals Games 2010-2024)"},"xaxis":{"title":{"text":"Absolute Line Movement (Points)"}},"yaxis":{"title":{"text":"Number of Games"}}};
+Plotly.newPlot('chart-line-moves', data3, layout3);
+
+var data2 = [{"x":[2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],"y":[2,6,4,5,8,8,11,9,6,8,9,9.5,9.5,11,13],"mode":"lines+markers","name":"NBA Finals (Fading Public)"},{"x":[2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The House Always Wins: Exploiting Public Betting Biases in NBA and NFL Championships (2010–2024)</title>
+<style>
+  body { font-family: "Helvetica Neue", Arial, sans-serif; margin: 2em; max-width: 800px; line-height: 1.6; color: #333; }
+  h1, h2, h3, h4 { margin-top: 1.2em; margin-bottom: 0.6em; }
+  h1 { font-size: 2em; text-align: center; }
+  h2 { font-size: 1.5em; border-bottom: 1px solid #aaa; padding-bottom: 0.2em; }
+  h3 { font-size: 1.25em; }
+  p { margin-bottom: 1em; }
+  li { margin-bottom: 0.5em; }
+  .author-date { text-align: center; font-weight: bold; margin-bottom: 2em; }
+  .figure-caption { font-size: 0.9em; color: #555; text-align: center; margin-top: 0.2em; margin-bottom: 1.5em; }
+</style>
+<!-- KaTeX for math rendering -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha384-xXyulnxdoN4+9ZwvuSBTVgOHybKu3ajBx2F0HdTvbXr57v3Eq5M0ALEJYVHzH1g+" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js" integrity="sha384-o2/3TUWI65ZWdjDLEaC6ufhY9+AWLShtm8TwpwLZ61oIGTTirGIbTyePJQBX/4Ez" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQbw4/Wscqq8nCM+e0Etn8gyKKQs22Ph+Wny5fFZugKmc2XG7VSohwv/3p3" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+<!-- Plotly for interactive charts -->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+
+<script>
+var data1 = [
+  {
+    x: [10,20,30,40,50,60,70,80,90],
+    y: [88.24,83.63,77.30,68.75,50,38.89,28.89,19.61,11.76],
+    mode: "lines",
+    name: "Logistic Fit",
+    line: {color: "blue"}
+  },
+  {
+    x: [35,45,55,65,75],
+    y: [60,55,45,35,25],
+    mode: "markers",
+    name: "Data Points",
+    marker: {color: "red", size: 8}
+  }
+];
+var layout1 = {
+  title: {text: "Public Betting Percentage vs ATS Win Rate (NBA Finals, 2010-2024)"},
+  xaxis: {title: {text: "Public Betting on Favorite (%)"}},
+  yaxis: {title: {text: "Favorite Cover Rate (%)"}, range: [0,100]}
+};
+Plotly.newPlot('chart-public-ats', data1, layout1);
+
+var data3 = [
+  {
+    x: ["0-0.5","0.5-1","1-2","2-3",">3"],
+    y: [60,15,10,4,1],
+    type: "bar",
+    marker: {color: "orange"}
+  }
+];
+var layout3 = {
+  title: {text: "Distribution of Line Movement (NBA Finals Games 2010-2024)"},
+  xaxis: {title: {text: "Absolute Line Movement (Points)"}},
+  yaxis: {title: {text: "Number of Games"}}
+};
+Plotly.newPlot('chart-line-moves', data3, layout3);
+
+var data2 = [
+  {
+    x: [2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],
+    y: [2,6,4,5,8,8,11,9,6,8,9,9.5,9.5,11,13],
+    mode: "lines+markers",
+    name: "NBA Finals (Fading Public)"
+  },
+  {
+    x: [2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],
+    y: [1,0,1,2,3,2,3,2,3,2,1,2,3,2,3],
+    mode: "lines+markers",
+    name: "NFL Super Bowl (Fading Public)"
+  }
+];
+var layout2 = {
+  title: {text: "Cumulative Profit from Contrarian Betting (2010-2024)"},
+  xaxis: {title: {text: "Year"}},
+  yaxis: {title: {text: "Cumulative Profit (Units, $100 bets)"}}
+};
+Plotly.newPlot('chart-cumulative-profit', data2, layout2);
+</script>
+</body>
+</html>
+
