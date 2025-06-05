@@ -30,12 +30,12 @@
 
 <h2>Abstract</h2>
 <p>This paper investigates whether sportsbooks exploit predictable public betting biases during high-profile championship games, 
-  specifically the NBA Finals and NFL Super Bowl from 2010 through 2024. We compile betting data (point spreads, outcomes, and public bet percentages) 
-  for these games and analyze against-the-spread (ATS) results, line movements, and bookmaker profit margins. Our findings reveal systematic inefficiencies: 
+  specifically the NBA Finals and NFL Super Bowl from 2010 through 2024. I compiled betting data (point spreads, outcomes, and public bet percentages) 
+  for these games and analyze against-the-spread (ATS) results, line movements, and bookmaker profit margins. My findings reveal systematic inefficiencies: 
   teams heavily favored by public bets significantly underperform ATS, consistent with the hypothesis that bookmakers shade odds against popular teams. 
-  A logistic regression confirms a strong inverse relationship between the proportion of public bets on a team and its probability of covering the spread. 
+  To further confirm this, I run a logistic regression which shows a strong inverse relationship between the proportion of public bets on a team and its probability of covering the spread. 
   Time-series analysis of betting outcomes illustrates that a simple contrarian strategy (fading the public) would have yielded substantial positive 
-  returns over the 15-year span, highlighting an enduring market bias. We discuss these results through a behavioral lens, identifying cognitive biases 
+  returns over the 15-year span, highlighting an enduring market bias. This paper discusses these results through a behavioral lens, identifying cognitive biases 
   (e.g. overconfidence, recency bias) that lead casual bettors to skew toward favorites and overs. The conclusion addresses implications for bettors 
   and regulators: the evidence suggests that “the house” indeed capitalizes on public biases, raising questions about market fairness and underscoring 
   the importance of bettor education and contrarian strategies.</p>
@@ -54,7 +54,7 @@
   (making it harder for them to cover).</p>
 
 <p>This research analyzes data from the past 15 years of NBA Finals games and NFL Super Bowls (2010–2024) to examine whether sportsbooks exploit
-  public tendencies in championship games, and if so, how this impacts betting outcomes and bookmaker profitability. We build on prior literature 
+  public tendencies in championship games, and if so, how this impacts betting outcomes and bookmaker profitability. This paper builds on prior literature 
   in sports finance and betting markets. <em>Levitt</em> (2004) theorized that bookmakers do not simply aim for equal money on each side of a bet,
   but instead knowingly allow <a href="https://surface.syr.edu/cgi/viewcontent.cgi?article=1004&context=researchcenter#">imbalanced betting</a> 
   when one side is overpriced due to bettor bias.
@@ -62,15 +62,15 @@
   yielded worse returns than underdogs and unders, implying bettors could profit by adopting contrarian strategies.
   These studies support the notion that sportsbooks include a sort of “public tax” – shading lines to make popular sides less likely to cover. 
   Our analysis focuses on the most-watched games – the NFL Super Bowl and the NBA Finals – to see if these effects are especially pronounced when 
-  casual betting interest peaks. Using logistic regression and time-series trend analysis on championship game data, we test whether public-favored 
+  casual betting interest peaks. Using logistic regression and time-series trend analysis on championship game data, I test whether public-favored 
   teams underperform ATS and visualize how point spreads move from opening to closing lines, as well as how consistently sportsbooks profit from these games.</p>
   
   <h2>Behavioral Theory Background</h2>
 <p>Why do bettors behave in ways that allow sportsbooks to exploit them? 
-  The answer lies in several well-documented cognitive and behavioral biases that affect decision-making under risk, 
+  Though a nuanced question, the short answer lies in several well-documented cognitive and behavioral biases that affect decision-making under risk, 
   especially in the emotionally charged context of sports fandom and big games. Championship events 
   like the Super Bowl and NBA Finals attract many casual bettors who may be betting with their hearts or 
-  instincts rather than objective analysis. Below, we outline a few key behavioral tendencies that 
+  instincts rather than objective analysis. Below, I outline a few key behavioral tendencies that 
   likely contribute to the public betting patterns observed:</p>
 
 <ul>
@@ -84,7 +84,7 @@
 <p>These biases are rooted in human psychology. Concepts from behavioral economics, 
   such as <em>prospect theory</em> (Kahneman &amp; Tversky) and others, show that people 
   do not always act as rational value-maximizers, especially under uncertainty and emotional involvement. 
-  Instead, we see bettors deriving utility from backing the perceived “better” team or their 
+  Instead, it shows that bettors deriving utility from backing the perceived “better” team or their 
   favorite stars (consumption utility), and the pain of losing may drive them to irrational decisions like chasing bets. 
   In a championship context, fans often bet with their hearts—e.g., Eagles fans all piling money on the 
   Eagles in the Super Bowl—skewing the betting percentages. The sportsbook, aware of these tendencies, 
