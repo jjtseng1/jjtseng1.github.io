@@ -133,12 +133,12 @@
 
 <h2>Methodology</h2>
 <p><strong>Data Collection:</strong> 
-  We compiled game-by-game betting data for every NBA Finals game from 2010 through 2024, 
+  This paper compiles game-by-game betting data for every NBA Finals game from 2010 through 2024, 
   as well as each NFL Super Bowl in that span. For each game, we recorded the teams involved, 
   the closing point spread (expressed from the favorite’s perspective, e.g. -6.5 means the favorite must win by 7 or more to cover), 
   and the game’s ATS result (whether the favorite covered the spread or the underdog covered/won). Where available, 
-  we also noted the opening point spread to assess line movement from open to close. Additionally,
-  we gathered the closing moneyline odds for each team (to infer implied win probabilities and gauge any extra vigorish on spreads)
+  I also noted the opening point spread to assess line movement from open to close. Additionally,
+  I gathered the closing moneyline odds for each team (to infer implied win probabilities and gauge any extra vigorish on spreads)
   and the public betting percentages on the point spread – specifically, the fraction of point-spread bets that were on the favorite versus the underdog. 
   These public percentage figures (often termed “consensus” or ticket split) were obtained from industry sources such as
   Action Network’s public betting data and SportsInsights reports, which track the distribution of bets across sportsbooks 
@@ -146,8 +146,8 @@
   By focusing on the point spread market, we hone in on cases where the oddsmakers’ goal is ostensibly to make the game a 50/50 proposition ATS.</p>
 
 <p><strong>Analysis Techniques:</strong> 
-  Our analysis proceeded in several steps. First, we conducted an exploratory analysis of ATS outcomes relative to public betting percentages. 
-  We segmented games by how lopsided the public betting was (e.g. games where the favorite received >60% of bets, ~50% of bets, etc.) 
+  The analysis proceeded in several steps. First, I conducted an exploratory analysis of ATS outcomes relative to public betting percentages. 
+  To do this, I segmented games by how lopsided the public betting was (e.g. games where the favorite received >60% of bets, ~50% of bets, etc.) 
   and calculated the favorite’s cover rate in each segment. This provided an initial look at whether “public favorite” teams underperform. 
   Next, we performed a <em>logistic regression</em> analysis to quantify the relationship between public betting and the likelihood of covering the spread. 
   The dependent variable is whether the favorite covered the spread (1 for cover, 0 for no cover), and key independent 
@@ -158,10 +158,10 @@
 
 <p>where \[\text{PublicPct}_{\text{fav}} \]
  is the fraction of bets on the favorite (from 0 to 100%), and a negative \[\beta_1 \] would indicate that as more 
-  of the public backs the favorite, the favorite’s chance of covering actually decreases. We also tested models including year indicators or a linear 
-  trend to see if the effect has strengthened or weakened over time. In addition to regression, we analyzed <em>time-series trends</em> of 
+  of the public backs the favorite, the favorite’s chance of covering actually decreases. I also tested models including year indicators or a linear 
+  trend to see if the effect has strengthened or weakened over time. In addition to regression, I analyzed <em>time-series trends</em> of 
   cumulative betting outcomes: essentially simulating a strategy that bets against the public in each game and tracking its running profit. 
-  This helps illustrate the consistency (or variability) of any contrarian edge over the 15-year sample. Finally, we examined line movement patterns: 
+  This helps illustrate the consistency (or variability) of any contrarian edge over the 15-year sample. Finally, I examined line movement patterns: 
   how often and how sharply point spreads moved from opening to closing, and whether those moves tended to be “correct” 
   (i.e. the side that attracted late money won) or if they also exhibited bias. All analysis was performed with a significance 
   level of 0.05 for statistical tests, and results are presented with relevant metrics like odds ratios for the logistic regression 
@@ -182,7 +182,7 @@
   will back certain teams even if the line is a point or two worse, the bookmaker can inflate the spread (or offer a worse payoff) for that side, 
   essentially charging a “tax” on the public favorite.</p>
 
-<p>Figure 1 below illustrates this relationship for the NBA Finals. We plot the percentage of public bets on the favorite against the
+<p>Figure 1 below illustrates this relationship for the NBA Finals. I plot the percentage of public bets on the favorite against the
   observed rate at which the favorite covered the spread in our sample. The downward trend is unmistakable – as the public betting percentage 
   on the favorite increases, the favorite’s success rate drops well below 50%. When the favorite was relatively unpopular (public bet % well below 50%,
   meaning the majority of bets were on the underdog), those favorites actually covered at above a 50% rate (indicating the public was often wrong to dismiss them). 
@@ -232,10 +232,10 @@
   However, the fact that our subset leaned towards public sides losing (40% win rate) aligns with the broader theme: 
   bettors who simply follow the consensus in these championship games are often disappointed.</p>
 
-<p>We also analyzed how point spreads moved from their opening to closing numbers in these high-profile games, 
+<p>I also analyzed how point spreads moved from their opening to closing numbers in these high-profile games, 
   to see how sportsbooks reacted to public betting and whether late line moves predicted outcomes. 
-  Interestingly, we found that large line movements were relatively rare in the NBA Finals, and when they did occur, 
-  they were not particularly predictive of ATS success. In our NBA Finals dataset, the vast majority of games (over 80%)
+  Interestingly, I found that large line movements were relatively rare in the NBA Finals, and when they did occur, 
+  they were not particularly predictive of ATS success. In the NBA Finals dataset, the vast majority of games (over 80%)
   saw the closing line stay within one point of the opening line – a testament to bookmakers setting efficient openers 
   and perhaps the split between public and sharp action counterbalancing each other. Only a handful of Finals games 
   (we estimate fewer than 10 since 2010) saw the line move by more than 2 points from open to close. And in those cases, 
@@ -249,7 +249,7 @@
   Substantial moves of over 2 points are exceedingly rare. This aligns with expectations: oddsmakers are skilled at anticipating
   public bias in these marquee matchups and often “price it in” from the start. When a significant line move does happen, 
   it’s usually because either an unexpected piece of news (e.g., an injury) or extremely lopsided betting forced an adjustment.
-  Our findings suggest that bettors should be cautious about reading too much into line moves in championship games – 
+  The findings suggest that bettors should be cautious about reading too much into line moves in championship games – 
   a big move doesn’t guarantee the moving side (which attracted the late action) is the “right” side. 
   In fact, some of the worst ATS beatdowns for public teams came in games with significant line moves towards those teams.</p>
 
@@ -259,7 +259,7 @@
 <p>Combining these findings: favorites (or popular underdogs) in championship games that attract a high percentage of public 
   bets tend to underperform relative to the betting line. Sportsbooks appear to consistently “win” in these scenarios, as evidenced 
   by the negative results for the betting majority. In terms of cumulative impact, the public’s biases translate into a sizable profit
-  opportunity for bookmakers (and conversely, a loss for casual bettors en masse). We quantify this more in the next section 
+  opportunity for bookmakers (and conversely, a loss for casual bettors en masse). I then quantify this more in the next section 
   by examining the cumulative profits of a contrarian betting strategy over time. But even at the aggregate level, 
   one can infer the impact on bookmakers’ hold. If public bettors are only winning ~42–45% of their spread bets in these Finals games, 
   the implied hold for the bookmaker is well above the standard 4.5% (which corresponds to a 50/50 win rate at -110 odds). 
@@ -270,7 +270,7 @@
 
 <h2>Time-Series and Regression Analysis</h2>
 <p>The statistical analysis reinforces the findings and shows that these patterns have been relatively consistent over time. 
-  In our logistic regression model described earlier, the coefficient on the public betting percentage was indeed negative and 
+  In the logistic regression model described earlier, the coefficient on the public betting percentage was indeed negative and 
   statistically significant (p &lt; 0.01). Interpreting the coefficient: for a 10 percentage-point increase 
   in the public bet share on the favorite, the odds of the favorite covering the spread decreased markedly 
   (our estimate suggests roughly a 40–50% reduction in odds of covering per +10% public support, 
@@ -280,12 +280,12 @@
   This is a dramatic shift, encapsulating the “tax” that popular teams seem to pay in terms of odds. 
   Notably, this relationship held even after controlling for the point spread itself — larger favorites did not 
   skew the result, meaning it’s not simply that big favorites (who naturally get more bets) cover less due to the size of the spread. 
-  It really is the bettor sentiment measure that carries the predictive power.</p>
+ </p>
 
-<p>We also examined whether the degree of bias has changed from 2010 to 2024. One might hypothesize that after the Supreme Court decision in 2018 
+<p>I also examined whether the degree of bias has changed from 2010 to 2024. One might hypothesize that after the Supreme Court decision in 2018 
   (Murphy v. NCAA) that led to widespread U.S. sports betting legalization, an influx of new bettors could have amplified public biases 
   (or alternatively, that increased market maturity and data availability could have reduced biases).
-  Our year-by-year analysis found no clear linear trend indicating that the bias is weakening or strengthening significantly — 
+  The year-by-year analysis found no clear linear trend indicating that the bias is weakening or strengthening significantly — 
   the inefficiencies were present throughout the period. 
   There were year-to-year fluctuations, of course. 
   For instance, in 2017 and 2018, public bettors actually had a couple of better outcomes 
